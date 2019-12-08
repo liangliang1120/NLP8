@@ -1,0 +1,80 @@
+Assignment 8
+
+1.复习课上内容， 阅读相应论文。
+
+2. 回答以下理论题目
+
+1. What is autoencoder?
+   把输入通过一个网络压缩到隐空间，再由另一个网络还原。然后将输出与原始输入做比较，求他们的距离，优化这个距离，达到两者相似甚至一致的效果。
+   autoencoder是一种数据的压缩算法，其中数据的压缩和解压缩函数是数据相关的、有损的、从样本中自动学习的。
+   在大部分提到自动编码器的场合，压缩和解压缩的函数是通过神经网络实现的。
+   
+2. What are the differences between greedy search and beam search?
+   greedy search每个节点都寻找最优的词，beam search会考虑多个选择从而综合考虑多个词的效果整体。
+   
+3. What is the intuition of attention mechanism?
+   进行局部聚焦，长程联系。attention mechanism是一种用于提升基于RNN（LSTM或GRU）的Encoder + Decoder模型的效果的的机制。
+   Attention Mechanism可以帮助模型对输入的X每个部分赋予不同的权重，抽取出更加关键及重要的信息，使模型做出更加准确的判断，
+   同时不会对模型的计算和存储带来更大的开销。
+
+4. What is the disadvantage of word embeding introduced in previous lectures ?
+   不能解决一词多义问题。
+
+5. What is the architecture of ELMo model. (A brief description is enough)
+   双向LSTM，第一个从左往右，第二个从右往左。
+
+6. Compared to RNN, what is the advantage of Transformer ?
+   Transformer 在机器翻译任务上的表现超过了 RNN，CNN，只用 encoder-decoder 和 attention 机制就能达到很好的效果，
+   最大的优点是可以高效地并行化。
+
+7. Why we use layer normalizaiton instead of batch normalization in Transformer ?
+   一个batch里面一个training sample某个位置的词是任意的，做batch normalization没有意义。
+   layer normalizaiton是针对深度网络的某一层的所有神经元的输入进行normalize操作
+
+8. Why we need position embedding in Transformer ?
+   Positional Encoding 是一种考虑输入序列中单词顺序的方法。
+   encoder 为每个输入 embedding 添加了一个向量，这些向量符合一种特定模式，可以确定每个单词的位置，或者序列中不同单词之间的距离。
+
+9. Briefly describe what is self-attention and what is multi-head attention?
+   当模型在处理每个单词时，self-attention 可以帮助模型查看 input 序列中的其他位置，寻找相关的线索，来达到更好的编码效果。
+   它的作用就是将对其他相关单词的“understanding”融入我们当前正在处理的单词中。
+   self-attention 具体原理：
+   第一步，为编码器的每个输入单词创建三个向量，
+   第二步，是计算一个得分，
+   第三步和第四步，是将得分加以处理再传递给 softmax
+   第五步，用这个得分乘以每个 value 向量
+   第六步，加权求和这些 value 向量
+   
+   multi-headed 注意力机制，可以提升注意力层的性能。
+   定义 8 组权重矩阵，每个单词会做 8 次上面的 self-attention 的计算，但在 feed-forward 处只能接收一个矩阵，所以需要将这八个压缩成一个矩阵。
+
+10. What is the basic unit of GPT model?
+    Transformer中的decoder
+
+11. Briefly descibe how to use GPT in other NLP tasks?
+    需要基于语言模型做masked-self-attention，不展现出预测值及以后的词。是单向的。
+    分类：输入一个句子，送入transformer，再加一个全连接神经网络。
+    entailment：一个句子+hypothesis+linear 比较逻辑关系
+    similarity:两个句子+加和+linear
+    multiple choice:输入+目标+linear
+    
+
+12. What is masked language model in BERT ?
+    仅当前预测值看不到，前后都可以取到。是双向的。
+    
+13. What are the inputs of BERT ?
+    word embeddings, segment embeddings, position embeddings
+
+14. Briely descibe how to use BERT in other NLP tasks.
+    序列标注：分词、实体识别、语义标注……
+　　 分类任务：文本分类、情感计算……
+　　 句子关系判断：entailment、QA、自然语言推理
+　　 生成式任务：机器翻译、文本摘要
+    BERT将传统大量在下游具体NLP任务中做的操作转移到预训练词向量中，在获得使用BERT词向量后，最终只需在词向量上加简单的MLP或线性分类器即可。
+    文本分类任务和文本匹配任务来说，只需要用得到的表示加上一层MLP就好
+
+15. What are the differences between these three models: GPT, BERT, GPT2.
+    BERT用transformer方法取代了ELMo中用LSTM提取特征的方法
+    BERT解决了GPT中单向语言模型的方法，变为双向。
+    BERT采用了Fine tuning方式
+    GPT2，more parameters,more data,还是单向的
